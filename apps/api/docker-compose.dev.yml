@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+   postgres:
+      container_name: wheel_postgres
+      image: postgres:latest
+      restart: unless-stopped
+      environment:
+         - POSTGRES_USER=wheel
+         - POSTGRES_PASSWORD=wheel
+         - POSTGRES_DB=wheel
+      volumes:
+         - postgres:/var/lib/postgres/data
+      ports:
+         - 5432:5432
+
+   redis:
+      container_name: wheel_redis
+      image: redis:latest
+      restart: unless-stopped
+      volumes:
+         - redis:/var/lib/redis/data
+      ports:
+         - 6379:6379
+
+volumes:
+   postgres:
+   redis:
