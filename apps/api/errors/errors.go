@@ -5,4 +5,5 @@ var (
 	ValidationError = "validation"
 	InternalError   = "internal"
 	DBError         = "db"
+	AuthError       = "auth"
 )

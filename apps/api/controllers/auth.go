@@ -6,6 +6,7 @@ import (
 	"wheel/config"
 	"wheel/db"
 	"wheel/errors"
+	"wheel/middlewares"
 	"wheel/models"
 	"wheel/schema"
 
@@ -21,6 +22,9 @@ func AuthGroup(r *fiber.App) {
 
 	auth.Post("/register", Register)
 	auth.Post("/login", Login)
+
+	me := auth.Group("/me", middlewares.AuthGuard)
+	me.Get("/", Me)
 }
 
 // Register route
@@ -161,6 +165,15 @@ func Login(c *fiber.Ctx) error {
 		"message": "logged in",
 		"payload": fiber.Map{
 			"token": tokenString,
+		},
+	})
+}
+
+func Me(c *fiber.Ctx) error {
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"success": true,
+		"payload": fiber.Map{
+			"user": c.Locals("user"),
 		},
 	})
 }
